@@ -230,26 +230,26 @@ function main(timestamp) {
     prevTime = timestamp;
     oneSec += deltaTime;
     
-    fps++;
+/*    fps++;
     if(oneSec/1000 >= 1){
         showFPS = fps;
         oneSec = 0;
         fps = 0;
-    }
+    }*/
     
     if(deltaTime >= 1000/60) {
-        /*fps++;
+        fps++;
         if(oneSec/1000 >= 1){
             showFPS = fps;
             oneSec = 0;
             fps = 0;
-        }*/
+        }
         
         //update functions
         update();
 
-        // draw functions
-        draw();
+        /*// draw functions
+        draw();*/
 
         // Update engine
 
@@ -259,6 +259,8 @@ function main(timestamp) {
         
         deltaTime = 0;
     }
+    // draw functions
+        draw();
     
     //if(frames < 10) console.log(timestamp);
     requestAnimationFrame(main);
