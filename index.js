@@ -230,20 +230,20 @@ function main(timestamp) {
     prevTime = timestamp;
     oneSec += deltaTime;
     
-/*    fps++;
+    fps++;
     if(oneSec/1000 >= 1){
         showFPS = fps;
         oneSec = 0;
         fps = 0;
-    }*/
+    }
     
     if(deltaTime >= 1000/60) {
-        fps++;
+        /*fps++;
         if(oneSec/1000 >= 1){
             showFPS = fps;
             oneSec = 0;
             fps = 0;
-        }
+        }*/
         
         //update functions
         update();
