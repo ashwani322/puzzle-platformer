@@ -76,6 +76,13 @@ function draw() {
             box1.draw();
             fan1.draw();
         }
+        if(level == 8) {
+            platform1.draw();
+            /*for(let i = 0 ; i<10000 ; i++) {
+                droplets[i].draw("fill");
+            }*/
+        }
+        
     }
 }
 
@@ -92,7 +99,7 @@ let box3;
 
 let fan1;
 
-//let water = [];
+//let droplets = [];
 
 function setup() {
     // to do things which are not required to run in the LOOP
@@ -163,8 +170,15 @@ function setup() {
             box1 = new Box(cvs.width - 300, cvs.height - 300, 100, 60, {});   
             
             fan1 = new fan(700, 300, 300, 30, {angle : 20 * Math.PI/180});
+        }
+        else if(level == 8) {
+            Ball = new ball(100, cvs.height - 400, 20, {restitution : 0});
+            goalBall = new ball(100, 105, 20, {restitution : 0, isStatic : true, isSensor : true});
             
-            
+            platform1 = new ground(cvs.width - 200, cvs.height - 350, 400, 30, {isStatic : true}); 
+            /*for(let i = 0 ; i<10000 ; i++) {
+                droplets[i]  = new ball(100, 100+i, 0.1, {restitution : 1, friction : 0});
+            }*/
             
         }
         
@@ -183,33 +197,72 @@ function Level() {
     
     if(isPlayerOnGoal) {
         level++;
-        if(level == 8) gameStatus.current = gameStatus.finish;
+        //if(level == 8) gameStatus.current = gameStatus.finish;
         isPlayerOnGoal = false;
         setup();
     }
     
+    // FPS
+    
+    ctx.beginPath();
+    ctx.font= "15px ARIAL";
+    ctx.fillText("FPS "+showFPS, 240, 40);
+    ctx.fill();
+    ctx.closePath();
     
 }
 
-function main() {
+let prevTime;
+let deltaTime = 0;
+let fps = 0;
+let oneSec = 0;
+let showFPS;
+
+function main(timestamp) {
     //clear the canvas
     ctx.clearRect(0, 0, cvs.width, cvs.height);
-    
-    //update functions
-    update();
-    
-    // draw functions
-    draw();
-    
-    // Update engine
-   
-    //ground.collisionDetection();
-    collisionDetection();
-    //platform.collisionDetectionPlatform();
-    
     frames++;
+    
+    // FPS handling
+    if(prevTime == undefined)
+        prevTime = timestamp;
+    deltaTime += timestamp - prevTime;
+    prevTime = timestamp;
+    oneSec += deltaTime;
+    
+    fps++;
+    if(oneSec/1000 >= 1){
+        showFPS = fps;
+        oneSec = 0;
+        fps = 0;
+    }
+    
+    if(deltaTime >= 1000/60) {
+        /*fps++;
+        if(oneSec/1000 >= 1){
+            showFPS = fps;
+            oneSec = 0;
+            fps = 0;
+        }*/
+        
+        //update functions
+        update();
+
+        // draw functions
+        draw();
+
+        // Update engine
+
+        //ground.collisionDetection();
+        collisionDetection();
+        //platform.collisionDetectionPlatform();
+        
+        deltaTime = 0;
+    }
+    
+    //if(frames < 10) console.log(timestamp);
     requestAnimationFrame(main);
     Engine.update(engine, 1000 / 60);
 }
 setup();
-main();
+requestAnimationFrame(main);
